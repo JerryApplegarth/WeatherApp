@@ -6,28 +6,40 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.applecompose.weatherapp.navigation.navigation.WeatherNavigation
 import com.applecompose.weatherapp.ui.theme.WeatherAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
 			WeatherAppTheme {
-				// A surface container using the 'background' color from the theme
-				Surface(
-					modifier = Modifier.fillMaxSize(),
-					color = MaterialTheme.colors.background
-				) {
-					MainScreen()
-
-				}
+				WeatherApp()
 			}
 		}
 	}
 }
 
 @Composable
-fun MainScreen() {
+fun WeatherApp() {
+	// A surface container using the 'background' color from the theme
+	Surface(
+		modifier = Modifier.fillMaxSize(),
+		color = MaterialTheme.colors.background
+	) {
+		Column(
+			verticalArrangement = Arrangement.Top,
+			horizontalAlignment = Alignment.CenterHorizontally
+			) {
+			WeatherNavigation()
+
+		}
+
+
+	}
 
 }
