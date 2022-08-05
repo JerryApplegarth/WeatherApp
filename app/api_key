@@ -8,6 +8,6 @@ https://api.openweathermap.org/
 -----------------------------------------
 new api:
 
-https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&appid=0591da9bc5afc7d4ba5f0232b164cb3f
+https://api.openweathermap.org/data/3.0/onecall?lat=43.23&lon=-123.32&appid=0591da9bc5afc7d4ba5f0232b164cb3f
 
 
