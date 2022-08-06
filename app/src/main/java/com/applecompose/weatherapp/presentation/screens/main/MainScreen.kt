@@ -26,6 +26,7 @@ import com.applecompose.weatherapp.data.model.Weather
 import com.applecompose.weatherapp.data.model.WeatherItem
 import com.applecompose.weatherapp.presentation.components.widgets.WeatherAppBar
 import com.applecompose.weatherapp.presentation.utils.formatDate
+import com.applecompose.weatherapp.presentation.utils.formatDateTime
 import com.applecompose.weatherapp.presentation.utils.formatDecimals
 import com.applecompose.weatherapp.ui.theme.sunColor
 
@@ -49,15 +50,15 @@ fun MainScreen(navController: NavController, mainViewModel: MainViewModel) {
 fun MainScaffold(weather: Weather, navController: NavController) {
 	Scaffold(
 		topBar = {
-		WeatherAppBar(
-			title = "Weather Location: ${weather.lat}, ${weather.lon}",
+			WeatherAppBar(
+				title = "Weather Location: ${weather.lat}, ${weather.lon}",
 
-			navController = navController,
-			elevation = 6.dp,
-			){
+				navController = navController,
+				elevation = 6.dp,
+			) {
 
+			}
 		}
-	}
 	) {
 		MainContent(data = weather)
 	}
@@ -83,7 +84,7 @@ fun MainContent(data: Weather) {
 			fontWeight = FontWeight.SemiBold,
 			modifier = Modifier
 				.padding(6.dp)
-			)
+		)
 		Surface(
 			modifier = Modifier
 				.padding(4.dp)
@@ -95,32 +96,74 @@ fun MainContent(data: Weather) {
 				verticalArrangement = Arrangement.Center,
 				horizontalAlignment = Alignment.CenterHorizontally
 
-				) {
-				WeatherStateImage(imageUrl = imageUrl )
+			) {
+				WeatherStateImage(imageUrl = imageUrl)
 
 				Text(
 					text = formatDecimals(weatherItem.temp) + "°",
 					style = MaterialTheme.typography.h4,
 					fontWeight = FontWeight.ExtraBold,
 					fontSize = 36.sp
-					)
+				)
 				Text(
 					text = data.current.weather[0].description,
 
 					fontStyle = FontStyle.Italic,
 					fontWeight = FontWeight.ExtraBold,
 					fontSize = 20.sp
-					)
+				)
 
 			}
 
 		}
 		HumidityWindPressureRow(weather = weatherItem)
 		Divider()
+		SunriseSunset(weather = weatherItem)
 	}
 
 
+}
 
+@Composable
+fun SunriseSunset(weather: WeatherItem) {
+	Row(
+		modifier = Modifier
+			.fillMaxWidth()
+			.padding(top = 15.dp, bottom = 6.dp),
+		horizontalArrangement = Arrangement.SpaceBetween,
+		verticalAlignment = Alignment.CenterVertically
+	) {
+		Row (modifier = Modifier.padding(start = 16.dp)){
+			Image(
+
+				painter = painterResource(id = R.drawable.sunrise),
+				contentDescription = "sunrise icon",
+				modifier = Modifier.size(20.dp),
+
+				)
+			Text(
+				text = formatDateTime(weather.sunrise),
+				style = MaterialTheme.typography.caption
+
+			)
+		}
+		Row(modifier = Modifier.padding(end = 6.dp)) {
+			Image(
+
+				painter = painterResource(id = R.drawable.sunset),
+				contentDescription = "sunset icon",
+				modifier = Modifier.size(20.dp),
+
+				)
+			Text(
+				text = formatDateTime(weather.humidity),
+				style = MaterialTheme.typography.caption
+			)
+
+
+		}
+
+	}
 
 }
 
@@ -141,11 +184,11 @@ fun HumidityWindPressureRow(weather: WeatherItem) {
 				painter = painterResource(id = R.drawable.humidity),
 				contentDescription = "humidity icon",
 				modifier = Modifier.size(20.dp)
-				)
+			)
 			Text(
 				text = "${weather.humidity}%",
 				style = MaterialTheme.typography.caption
-				)
+			)
 
 		}
 		Row() {
@@ -183,7 +226,7 @@ fun WeatherStateImage(imageUrl: String) {
 		painter = rememberImagePainter(imageUrl),
 		contentDescription = "Icon Image",
 		modifier = Modifier.size(80.dp)
-		)
+	)
 
 }
 
