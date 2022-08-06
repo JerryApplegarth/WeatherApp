@@ -22,6 +22,7 @@ import com.applecompose.weatherapp.data.DataOrException
 import com.applecompose.weatherapp.data.model.Weather
 import com.applecompose.weatherapp.presentation.components.widgets.WeatherAppBar
 import com.applecompose.weatherapp.presentation.utils.formatDate
+import com.applecompose.weatherapp.presentation.utils.formatDecimals
 import com.applecompose.weatherapp.ui.theme.sunColor
 
 @Composable
@@ -93,13 +94,13 @@ fun MainContent(data: Weather) {
 				WeatherStateImage(imageUrl = imageUrl )
 
 				Text(
-					text = data.current.temp.toString(),
+					text = formatDecimals(data.current.temp),
 					style = MaterialTheme.typography.h4,
 					fontWeight = FontWeight.ExtraBold,
 					fontSize = 36.sp
 					)
 				Text(
-					text = "Hot",
+					text = data.current.weather[0].description,
 
 					fontStyle = FontStyle.Italic,
 					fontWeight = FontWeight.ExtraBold,
@@ -120,7 +121,7 @@ fun WeatherStateImage(imageUrl: String) {
 	Image(
 		painter = rememberImagePainter(imageUrl),
 		contentDescription = "Icon Image",
-		modifier = Modifier.size(90.dp)
+		modifier = Modifier.size(80.dp)
 		)
 
 }
