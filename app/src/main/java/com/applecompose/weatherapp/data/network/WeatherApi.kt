@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 interface WeatherApi {
 
-	@GET(value = "data/3.0/onecall?lat=43.23&lon=-123.32&appid=0591da9bc5afc7d4ba5f0232b164cb3f")
+	@GET(value = "data/3.0/onecall?lat=43.23&lon=-123.32&appid=0591da9bc5afc7d4ba5f0232b164cb3f&units=imperial")
 	suspend fun getWeather(
 		@Query("lat") lat: String = Constants.LAT,
 		@Query("lon") lon: String = Constants.LON,
