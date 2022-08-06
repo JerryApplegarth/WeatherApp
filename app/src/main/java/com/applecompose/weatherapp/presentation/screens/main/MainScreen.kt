@@ -12,14 +12,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
+import com.applecompose.weatherapp.R
 import com.applecompose.weatherapp.data.DataOrException
 import com.applecompose.weatherapp.data.model.Weather
+import com.applecompose.weatherapp.data.model.WeatherItem
 import com.applecompose.weatherapp.presentation.components.widgets.WeatherAppBar
 import com.applecompose.weatherapp.presentation.utils.formatDate
 import com.applecompose.weatherapp.presentation.utils.formatDecimals
@@ -61,8 +65,9 @@ fun MainScaffold(weather: Weather, navController: NavController) {
 
 @Composable
 fun MainContent(data: Weather) {
+	val weatherItem = data.current
+	val imageUrl = "https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}.png"
 
-	val imageUrl = "https://openweathermap.org/img/wn/${data.current.weather[0].icon}.png"
 
 	Column(
 		modifier = Modifier
@@ -72,7 +77,7 @@ fun MainContent(data: Weather) {
 	) {
 
 		Text(
-			text = formatDate(data.current.dt),
+			text = formatDate(weatherItem.dt),
 			style = MaterialTheme.typography.caption,
 			color = MaterialTheme.colors.onSecondary,
 			fontWeight = FontWeight.SemiBold,
@@ -94,7 +99,7 @@ fun MainContent(data: Weather) {
 				WeatherStateImage(imageUrl = imageUrl )
 
 				Text(
-					text = formatDecimals(data.current.temp),
+					text = formatDecimals(weatherItem.temp) + "°",
 					style = MaterialTheme.typography.h4,
 					fontWeight = FontWeight.ExtraBold,
 					fontSize = 36.sp
@@ -110,9 +115,65 @@ fun MainContent(data: Weather) {
 			}
 
 		}
-
+		HumidityWindPressureRow(weather = weatherItem)
+		Divider()
 	}
 
+
+
+
+}
+
+@Composable
+fun HumidityWindPressureRow(weather: WeatherItem) {
+	Row(
+		modifier = Modifier
+			.padding(12.dp)
+			.fillMaxWidth(),
+		verticalAlignment = Alignment.CenterVertically,
+		horizontalArrangement = Arrangement.SpaceBetween
+	) {
+		Row(
+			modifier = Modifier
+				.padding(4.dp)
+		) {
+			Icon(
+				painter = painterResource(id = R.drawable.humidity),
+				contentDescription = "humidity icon",
+				modifier = Modifier.size(20.dp)
+				)
+			Text(
+				text = "${weather.humidity}%",
+				style = MaterialTheme.typography.caption
+				)
+
+		}
+		Row() {
+			Icon(
+				painter = painterResource(id = R.drawable.pressure),
+				contentDescription = "pressure icon",
+				modifier = Modifier.size(20.dp)
+			)
+			Text(
+				text = "${weather.pressure}psi",
+				style = MaterialTheme.typography.caption
+			)
+
+		}
+		Row() {
+			Icon(
+				painter = painterResource(id = R.drawable.wind),
+				contentDescription = "wind icon",
+				modifier = Modifier.size(20.dp)
+			)
+			Text(
+				text = "${weather.wind_speed} mph",
+				style = MaterialTheme.typography.caption
+			)
+
+		}
+
+	}
 
 }
 
