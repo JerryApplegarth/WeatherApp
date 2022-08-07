@@ -1,10 +1,8 @@
 package com.applecompose.weatherapp.presentation.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -29,8 +27,8 @@ fun WeatherDetailRow(dailyItem: Daily) {
 		modifier = Modifier
 			.padding(3.dp)
 			.fillMaxWidth(),
-		shape = CircleShape,
-		color = MaterialTheme.colors.secondary
+		shape = CircleShape.copy(CornerSize(6.dp)),
+		color = MaterialTheme.colors.background
 	) {
 		Row(
 			modifier = Modifier
@@ -69,8 +67,9 @@ fun WeatherDetailRow(dailyItem: Daily) {
 
 						)
 				) {
-					append(formatDecimals(dailyItem.temp.min))
+					append(formatDecimals(dailyItem.temp.min) + "°")
 				}
+
 
 
 			})
