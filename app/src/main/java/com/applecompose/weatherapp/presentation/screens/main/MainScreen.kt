@@ -11,18 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.applecompose.weatherapp.data.DataOrException
 import com.applecompose.weatherapp.data.model.Daily
 import com.applecompose.weatherapp.data.model.Weather
-import com.applecompose.weatherapp.presentation.components.HumidityWindPressureRow
-import com.applecompose.weatherapp.presentation.components.SunriseSunset
-import com.applecompose.weatherapp.presentation.components.WeatherAppBar
-import com.applecompose.weatherapp.presentation.components.WeatherStateImage
+import com.applecompose.weatherapp.presentation.components.*
 import com.applecompose.weatherapp.presentation.utils.formatDate
 import com.applecompose.weatherapp.presentation.utils.formatDecimals
 import com.applecompose.weatherapp.ui.theme.sunColor
@@ -66,15 +67,12 @@ fun MainContent(data: Weather) {
 	val weatherItem = data.current
 	val imageUrl = "https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}.png"
 	val dailyItem = data.daily
-
-
 	Column(
 		modifier = Modifier
 			.padding(4.dp)
 			.fillMaxWidth(),
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
-
 		Text(
 			text = formatDate(weatherItem.dt),
 			style = MaterialTheme.typography.caption,
@@ -93,10 +91,8 @@ fun MainContent(data: Weather) {
 			Column(
 				verticalArrangement = Arrangement.Center,
 				horizontalAlignment = Alignment.CenterHorizontally
-
 			) {
 				WeatherStateImage(imageUrl = imageUrl)
-
 				Text(
 					text = formatDecimals(weatherItem.temp) + "°",
 					style = MaterialTheme.typography.h4,
@@ -105,14 +101,11 @@ fun MainContent(data: Weather) {
 				)
 				Text(
 					text = data.current.weather[0].description,
-
 					fontStyle = FontStyle.Italic,
 					fontWeight = FontWeight.ExtraBold,
 					fontSize = 20.sp
 				)
-
 			}
-
 		}
 		HumidityWindPressureRow(weather = weatherItem)
 		Divider()
@@ -122,20 +115,19 @@ fun MainContent(data: Weather) {
 			text = "This Week",
 			style = MaterialTheme.typography.subtitle1,
 			fontWeight = FontWeight.Bold
-			)
+		)
 		Surface(
 			modifier = Modifier
 				.fillMaxSize(),
 			color = MaterialTheme.colors.secondary,
 			shape = RoundedCornerShape(16.dp)
-			) {
+		) {
 			LazyColumn(
 				modifier = Modifier
 					.padding(2.dp),
 				contentPadding = PaddingValues(1.dp)
-			){
-				items(items = data.daily) {
-					item: Daily ->
+			) {
+				items(items = data.daily) { item: Daily ->
 					//Text(item.temp.max.toString())
 					WeatherDetailRow(dailyItem = item)
 				}
@@ -146,46 +138,6 @@ fun MainContent(data: Weather) {
 
 	}
 }
-
-@Composable
-fun WeatherDetailRow(dailyItem: Daily) {
-	val imageUrl = "https://openweathermap.org/img/wn/${dailyItem.weather[0].icon}.png"
-	
-	Surface(
-		modifier = Modifier
-			.padding(3.dp)
-			.fillMaxWidth(),
-		shape = CircleShape,
-		color = MaterialTheme.colors.secondary
-	) {
-		Row(
-			modifier = Modifier
-				.fillMaxWidth(),
-			verticalAlignment = Alignment.CenterVertically,
-			horizontalArrangement = Arrangement.SpaceBetween
-		) {
-			Text(formatDate(dailyItem.dt)
-				.split(",")[0],
-				modifier = Modifier
-					.padding(start = 6.dp)
-				)
-			WeatherStateImage(imageUrl = imageUrl)
-			Surface(
-				modifier = Modifier
-					.padding(0.dp),
-				shape = CircleShape,
-				color = MaterialTheme.colors.primary
-			) {
-				Text(dailyItem.weather[0].description)
-
-			}
-			
-
-		}
-
-	}
-
-	}
 
 
 

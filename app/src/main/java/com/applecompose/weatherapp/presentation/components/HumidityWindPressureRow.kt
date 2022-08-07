@@ -10,8 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.applecompose.weatherapp.R
 import com.applecompose.weatherapp.data.model.WeatherItem
+import com.applecompose.weatherapp.presentation.utils.formatDecimals
 
 @Composable
 fun HumidityWindPressureRow(weather: WeatherItem) {
@@ -46,7 +48,8 @@ fun HumidityWindPressureRow(weather: WeatherItem) {
 //			)
 			Text(
 
-				text = "Feels Like: ${weather.feels_like}",
+				text = "Feels Like: ${formatDecimals(weather.feels_like)}" + "°",
+				fontSize = 16.sp,
 				fontWeight = FontWeight.Bold,
 				style = MaterialTheme.typography.caption,
 
@@ -60,7 +63,7 @@ fun HumidityWindPressureRow(weather: WeatherItem) {
 				modifier = Modifier.size(30.dp)
 			)
 			Text(
-				text = "${weather.wind_speed} mph",
+				text = "${formatDecimals(weather.wind_speed)} mph",
 				style = MaterialTheme.typography.caption
 			)
 
