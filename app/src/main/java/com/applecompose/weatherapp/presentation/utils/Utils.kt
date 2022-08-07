@@ -1,5 +1,6 @@
 package com.applecompose.weatherapp.presentation.utils
 
+import com.applecompose.weatherapp.data.model.Daily
 import java.text.SimpleDateFormat
 
 fun formatDate(timestamp: Int): String {

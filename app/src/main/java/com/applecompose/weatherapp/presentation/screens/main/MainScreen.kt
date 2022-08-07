@@ -1,32 +1,29 @@
 package com.applecompose.weatherapp.presentation.screens.main
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
-import com.applecompose.weatherapp.R
 import com.applecompose.weatherapp.data.DataOrException
+import com.applecompose.weatherapp.data.model.Daily
 import com.applecompose.weatherapp.data.model.Weather
-import com.applecompose.weatherapp.data.model.WeatherItem
-import com.applecompose.weatherapp.presentation.components.widgets.WeatherAppBar
+import com.applecompose.weatherapp.presentation.components.HumidityWindPressureRow
+import com.applecompose.weatherapp.presentation.components.SunriseSunset
+import com.applecompose.weatherapp.presentation.components.WeatherAppBar
+import com.applecompose.weatherapp.presentation.components.WeatherStateImage
 import com.applecompose.weatherapp.presentation.utils.formatDate
-import com.applecompose.weatherapp.presentation.utils.formatDateTime
 import com.applecompose.weatherapp.presentation.utils.formatDecimals
 import com.applecompose.weatherapp.ui.theme.sunColor
 
@@ -68,6 +65,7 @@ fun MainScaffold(weather: Weather, navController: NavController) {
 fun MainContent(data: Weather) {
 	val weatherItem = data.current
 	val imageUrl = "https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}.png"
+	val dailyItem = data.daily
 
 
 	Column(
@@ -119,117 +117,90 @@ fun MainContent(data: Weather) {
 		HumidityWindPressureRow(weather = weatherItem)
 		Divider()
 		SunriseSunset(weather = weatherItem)
-	}
-
-
-}
-
-@Composable
-fun SunriseSunset(weather: WeatherItem) {
-	Row(
-		modifier = Modifier
-			.fillMaxWidth()
-			.padding(top = 15.dp, bottom = 6.dp),
-		horizontalArrangement = Arrangement.SpaceBetween,
-		verticalAlignment = Alignment.CenterVertically
-	) {
-		Row (modifier = Modifier.padding(start = 16.dp)){
-			Image(
-
-				painter = painterResource(id = R.drawable.sunrise),
-				contentDescription = "sunrise icon",
-				modifier = Modifier.size(20.dp),
-
-				)
-			Text(
-				text = formatDateTime(weather.sunrise),
-				style = MaterialTheme.typography.caption
-
+		Divider()
+		Text(
+			text = "This Week",
+			style = MaterialTheme.typography.subtitle1,
+			fontWeight = FontWeight.Bold
 			)
-		}
-		Row(modifier = Modifier.padding(end = 6.dp)) {
-			Image(
+		Surface(
+			modifier = Modifier
+				.fillMaxSize(),
+			color = MaterialTheme.colors.secondary,
+			shape = RoundedCornerShape(16.dp)
+			) {
+			LazyColumn(
+				modifier = Modifier
+					.padding(2.dp),
+				contentPadding = PaddingValues(1.dp)
+			){
+				items(items = data.daily) {
+					item: Daily ->
+					//Text(item.temp.max.toString())
+					WeatherDetailRow(dailyItem = item)
+				}
 
-				painter = painterResource(id = R.drawable.sunset),
-				contentDescription = "sunset icon",
-				modifier = Modifier.size(20.dp),
-
-				)
-			Text(
-				text = formatDateTime(weather.humidity),
-				style = MaterialTheme.typography.caption
-			)
-
+			}
 
 		}
 
 	}
-
 }
 
 @Composable
-fun HumidityWindPressureRow(weather: WeatherItem) {
-	Row(
+fun WeatherDetailRow(dailyItem: Daily) {
+	val imageUrl = "https://openweathermap.org/img/wn/${dailyItem.weather[0].icon}.png"
+	
+	Surface(
 		modifier = Modifier
-			.padding(12.dp)
+			.padding(3.dp)
 			.fillMaxWidth(),
-		verticalAlignment = Alignment.CenterVertically,
-		horizontalArrangement = Arrangement.SpaceBetween
+		shape = CircleShape,
+		color = MaterialTheme.colors.secondary
 	) {
 		Row(
 			modifier = Modifier
-				.padding(4.dp)
+				.fillMaxWidth(),
+			verticalAlignment = Alignment.CenterVertically,
+			horizontalArrangement = Arrangement.SpaceBetween
 		) {
-			Icon(
-				painter = painterResource(id = R.drawable.humidity),
-				contentDescription = "humidity icon",
-				modifier = Modifier.size(20.dp)
-			)
-			Text(
-				text = "${weather.humidity}%",
-				style = MaterialTheme.typography.caption
-			)
+			Text(formatDate(dailyItem.dt)
+				.split(",")[0],
+				modifier = Modifier
+					.padding(start = 6.dp)
+				)
+			WeatherStateImage(imageUrl = imageUrl)
+			Surface(
+				modifier = Modifier
+					.padding(0.dp),
+				shape = CircleShape,
+				color = MaterialTheme.colors.primary
+			) {
+				Text(dailyItem.weather[0].description)
 
-		}
-		Row() {
-			Icon(
-				painter = painterResource(id = R.drawable.pressure),
-				contentDescription = "pressure icon",
-				modifier = Modifier.size(20.dp)
-			)
-			Text(
-				text = "${weather.pressure}psi",
-				style = MaterialTheme.typography.caption
-			)
-
-		}
-		Row() {
-			Icon(
-				painter = painterResource(id = R.drawable.wind),
-				contentDescription = "wind icon",
-				modifier = Modifier.size(20.dp)
-			)
-			Text(
-				text = "${weather.wind_speed} mph",
-				style = MaterialTheme.typography.caption
-			)
+			}
+			
 
 		}
 
 	}
 
-}
+	}
 
-@Composable
-fun WeatherStateImage(imageUrl: String) {
-	Image(
-		painter = rememberImagePainter(imageUrl),
-		contentDescription = "Icon Image",
-		modifier = Modifier.size(80.dp)
-	)
 
-}
 
-//Text(text = "Main Screen: lat: ${weatherData.data!!.lat}, lon: ${weatherData.data!!.lon}")
-//Spacer(modifier = Modifier.height(16.dp))
-//Text(text = "Main Screen: lat: ${weatherData.data!!}")
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+

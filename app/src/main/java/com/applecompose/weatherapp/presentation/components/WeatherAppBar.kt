@@ -1,4 +1,4 @@
-package com.applecompose.weatherapp.presentation.components.widgets
+package com.applecompose.weatherapp.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
