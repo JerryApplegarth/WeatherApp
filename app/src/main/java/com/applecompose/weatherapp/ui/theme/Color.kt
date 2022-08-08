@@ -55,7 +55,7 @@ val Tan = Color(0xFFDDBC83)
 
 val Colors.cardBackground: Color
     @Composable
-    get() = if (isLight) CardBackground else MediumGreen
+    get() = if (isLight) LtBlue else MediumGreen
 
 val Colors.mediumGreen: Color
     @Composable

@@ -1,6 +1,9 @@
 package com.applecompose.weatherapp.presentation.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.MaterialTheme
@@ -32,7 +35,10 @@ fun WeatherDetailRow(dailyItem: Daily) {
 	) {
 		Row(
 			modifier = Modifier
-				.fillMaxWidth(),
+				.fillMaxWidth()
+				.padding(start = 6.dp, end = 6.dp),
+
+
 			verticalAlignment = Alignment.CenterVertically,
 			horizontalArrangement = Arrangement.SpaceBetween
 		) {
@@ -42,12 +48,12 @@ fun WeatherDetailRow(dailyItem: Daily) {
 				modifier = Modifier
 					.padding(start = 6.dp)
 			)
-			WeatherStateImage(imageUrl = imageUrl)
+			WeatherStateImageSmall(imageUrl = imageUrl)
 			Surface(
 				modifier = Modifier
-					.padding(0.dp),
+					.padding(6.dp),
 				shape = CircleShape,
-				color = MaterialTheme.colors.primary
+				color = Color.Transparent
 			) {
 				Text(dailyItem.weather[0].description)
 
@@ -62,8 +68,10 @@ fun WeatherDetailRow(dailyItem: Daily) {
 					append(formatDecimals(dailyItem.temp.max) + "°")
 				}
 				withStyle(
+
 					style = SpanStyle(
 						color = Color.DarkGray,
+
 
 						)
 				) {
@@ -72,7 +80,9 @@ fun WeatherDetailRow(dailyItem: Daily) {
 
 
 
-			})
+			}
+
+			)
 
 
 		}

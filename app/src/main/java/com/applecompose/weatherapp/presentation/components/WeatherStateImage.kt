@@ -16,3 +16,12 @@ fun WeatherStateImage(imageUrl: String) {
 	)
 
 }
+@Composable
+fun WeatherStateImageSmall(imageUrl: String) {
+	Image(
+		painter = rememberImagePainter(imageUrl),
+		contentDescription = "Icon Image",
+		modifier = Modifier.size(60.dp)
+	)
+
+}
